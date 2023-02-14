@@ -1,6 +1,5 @@
 package com.example.login.presentation.registration
 
-import android.widget.Space
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
@@ -27,19 +26,20 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.login.navigation.AppScreens
 import com.example.login.presentation.components.RoundedButton
 import com.example.login.presentation.components.SocialMediaButton
 import com.example.login.presentation.components.TransparentTextField
 
 @Composable
-fun RegistrationScreen(){
+fun RegistrationScreen(navController: NavController){
     val nameValue= remember { mutableStateOf("") }
     val emailValue= remember { mutableStateOf("") }
     val phoneValue= remember { mutableStateOf("") }
     val passValue= remember { mutableStateOf("") }
     val confirmPassValue= remember { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(false) }
-    var confirmPasswordVisibility by remember { mutableStateOf(false) }
     val focusManager= LocalFocusManager.current
     Box(modifier = Modifier.fillMaxWidth()){
         Column(modifier = Modifier
@@ -47,7 +47,7 @@ fun RegistrationScreen(){
             .padding(16.dp)
             .verticalScroll(rememberScrollState())) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(route = AppScreens.LoginScreen.ruta) }) {
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription ="Regresar al login" )
                 }//FinIconButton
                 Text(text = "Crear una Cuenta", style = MaterialTheme.typography.h6.copy(

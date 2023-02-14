@@ -31,12 +31,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
 import com.example.login.R
+import com.example.login.navigation.AppScreens
 import com.example.login.presentation.components.RoundedButton
 import com.example.login.presentation.components.TransparentTextField
 
 @Composable
-fun LoginScreen(){
+fun LoginScreen(navController: NavController){
     val emailValue= rememberSaveable{ mutableStateOf("") }
     val passwordValue= rememberSaveable{mutableStateOf("")}
     var passwordVisibility by remember{mutableStateOf(false)}
@@ -171,9 +173,8 @@ fun LoginScreen(){
                                             append("Sing Up")
                                         }//finwithStyle
                                     },//FIntext
-                                ){
-                                    //TODO
-                                }//Fin clickeableText
+                                    onClick = {navController.navigate(route = AppScreens.RegistrationScreen.ruta)}
+                                )//Fin clickeableText
                             }//fin columna botones de login
                         }//finColumn
                     }
