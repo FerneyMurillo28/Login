@@ -27,13 +27,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.login.navigation.AppScreens
+import com.example.login.presentation.components.EventDialog
 import com.example.login.presentation.components.RoundedButton
 import com.example.login.presentation.components.SocialMediaButton
 import com.example.login.presentation.components.TransparentTextField
 
 @Composable
-fun RegistrationScreen(navController: NavController){
+fun RegistrationScreen(
+    navController: NavController,
+    state:RegisterState,
+    onRegister: ()->Unit,
+    onBack:()->Unit,
+    onDismissDialog:()->Unit
+    ){
     val nameValue= remember { mutableStateOf("") }
     val emailValue= remember { mutableStateOf("") }
     val phoneValue= remember { mutableStateOf("") }
@@ -47,7 +53,7 @@ fun RegistrationScreen(navController: NavController){
             .padding(16.dp)
             .verticalScroll(rememberScrollState())) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { navController.navigate(route = AppScreens.LoginScreen.ruta) }) {
+                IconButton(onClick = { onBack() }) {
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription ="Regresar al login" )
                 }//FinIconButton
                 Text(text = "Crear una Cuenta", style = MaterialTheme.typography.h6.copy(
@@ -132,6 +138,14 @@ fun RegistrationScreen(navController: NavController){
                     keyboardActions = KeyboardActions(
                         onDone = {
                             focusManager.clearFocus()
+                            onRegister()
+                                /*. register(
+                                nameValue.value,
+                                emailValue.value,
+                                phoneValue.value,
+                                passValue.value,
+                                confirmPassValue.value
+                            )*/
                         }
                     ),
                     imeAction = ImeAction.Done,
@@ -160,8 +174,15 @@ fun RegistrationScreen(navController: NavController){
                 Spacer(modifier =Modifier.height(16.dp) )
                 RoundedButton(
                     text ="Sing Up",
-                    displayProgressBar = false,
-                    onClick = {//TODO
+                    displayProgressBar = state.displayProgressBar,
+                    onClick = { onRegister()
+                        /*. register(
+                        nameValue.value,
+                        emailValue.value,
+                        phoneValue.value,
+                        passValue.value,
+                        confirmPassValue.value
+                    )*/
                     }
                 )//FinRounderButton
                 ClickableText(text = buildAnnotatedString {
@@ -176,7 +197,7 @@ fun RegistrationScreen(navController: NavController){
                     }
                 },
                     onClick ={
-                        //TODO
+                        onBack()
                     } )
             }//FinColum2
             Spacer(modifier = Modifier.height(16.dp))
@@ -219,5 +240,8 @@ fun RegistrationScreen(navController: NavController){
                     socialMediaColor = MaterialTheme.colors.secondaryVariant)
             }
         }//FinColumn
+        if (state.errorMessages!=null){
+            EventDialog(errorMessage = state.errorMessages, onDismiss = onDismissDialog)
+        }
     }//finBox
 }//FinFuncion

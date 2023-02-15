@@ -33,12 +33,18 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import com.example.login.R
-import com.example.login.navigation.AppScreens
+import com.example.login.presentation.components.EventDialog
 import com.example.login.presentation.components.RoundedButton
 import com.example.login.presentation.components.TransparentTextField
 
 @Composable
-fun LoginScreen(navController: NavController){
+fun LoginScreen(
+    navController: NavController,
+    state:LoginState,
+    onLogin:(user:String,pass:String)->Unit,
+    onNavigateToRegister : ( )->Unit,
+    onDismissDiolog:()->Unit
+){
     val emailValue= rememberSaveable{ mutableStateOf("") }
     val passwordValue= rememberSaveable{mutableStateOf("")}
     var passwordVisibility by remember{mutableStateOf(false)}
@@ -115,7 +121,7 @@ fun LoginScreen(navController: NavController){
                                 keyboardActions = KeyboardActions(
                                     onDone = {
                                         focusManager.clearFocus()
-                                        /*TODO*/
+                                        onLogin(emailValue.value,passwordValue.value)
                                     }
                                 ),
                                 imeAction = ImeAction.Done,
@@ -156,9 +162,9 @@ fun LoginScreen(navController: NavController){
                             ) {
                                 RoundedButton(
                                     text ="Login",
-                                    displayProgressBar = false,
+                                    displayProgressBar = state.displayProgressBar,
                                     onClick = {
-                                        //TODO
+                                        onLogin(emailValue.value,passwordValue.value)
                                     }//finOnclickRounded Button
                                 )//Fin roundedButton
                                 ClickableText(
@@ -173,7 +179,10 @@ fun LoginScreen(navController: NavController){
                                             append("Sing Up")
                                         }//finwithStyle
                                     },//FIntext
-                                    onClick = {navController.navigate(route = AppScreens.RegistrationScreen.ruta)}
+                                    onClick = {
+//                                        navController.navigate(route = AppScreens.RegistrationScreen.ruta)
+                                        onNavigateToRegister()
+                                    }
                                 )//Fin clickeableText
                             }//fin columna botones de login
                         }//finColumn
@@ -187,7 +196,7 @@ fun LoginScreen(navController: NavController){
                             end.linkTo(surface.end, margin = 20.dp)
                         },
                     backgroundColor = MaterialTheme.colors.primary,
-                    onClick = {/*TODO*/})
+                    onClick = {onNavigateToRegister()})
                 {
                  Icon(
                      modifier = Modifier.size(72.dp),
@@ -198,5 +207,11 @@ fun LoginScreen(navController: NavController){
                 }//fin floatingbutton
             }//fin constraint
         }//fin box2
+        if (state.errorMessages != null ){
+            EventDialog(
+                onDismiss = onDismissDiolog,
+                errorMessage = state.errorMessages
+            )
+        }
     }//fin box
 }//fin funcion
