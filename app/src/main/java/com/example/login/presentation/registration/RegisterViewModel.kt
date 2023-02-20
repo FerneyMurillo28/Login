@@ -18,7 +18,8 @@ class RegisterViewModel:ViewModel(){
         password:String="",
         confirmPassword:String=""
     ){
-        val errorMessages=if(name.isBlank()||email.isBlank()||phoneNumber.isBlank()||password.isBlank()||confirmPassword.isBlank()){
+        val errorMessages=
+        if(name.isBlank()||email.isBlank()||phoneNumber.isBlank()||password.isBlank()||confirmPassword.isBlank()){
             R.string.error_input_empty
         }else if(!Patterns.PHONE.matcher(phoneNumber).matches()){
             R.string.error_not_e_valid_phone_number
@@ -34,7 +35,7 @@ class RegisterViewModel:ViewModel(){
         viewModelScope.launch {
             state.value=state.value.copy(displayProgressBar = true)
             delay(3000)
-            state.value=state.value.copy(displayProgressBar = true)
+            state.value=state.value.copy(displayProgressBar = false)
         }
     }
     fun hideErrorDialog(){

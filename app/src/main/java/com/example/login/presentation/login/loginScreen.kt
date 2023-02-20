@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import com.example.login.R
+import com.example.login.navigation.AppScreens
 import com.example.login.presentation.components.EventDialog
 import com.example.login.presentation.components.RoundedButton
 import com.example.login.presentation.components.TransparentTextField
@@ -122,6 +123,7 @@ fun LoginScreen(
                                     onDone = {
                                         focusManager.clearFocus()
                                         onLogin(emailValue.value,passwordValue.value)
+                                        navController.navigate(AppScreens.HomeScreen.createRoute(emailValue.value.toString()))
                                     }
                                 ),
                                 imeAction = ImeAction.Done,
@@ -165,6 +167,7 @@ fun LoginScreen(
                                     displayProgressBar = state.displayProgressBar,
                                     onClick = {
                                         onLogin(emailValue.value,passwordValue.value)
+
                                     }//finOnclickRounded Button
                                 )//Fin roundedButton
                                 ClickableText(

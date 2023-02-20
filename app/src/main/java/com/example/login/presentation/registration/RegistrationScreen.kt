@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.login.navigation.AppScreens
 import com.example.login.presentation.components.EventDialog
 import com.example.login.presentation.components.RoundedButton
 import com.example.login.presentation.components.SocialMediaButton
@@ -36,7 +37,7 @@ import com.example.login.presentation.components.TransparentTextField
 fun RegistrationScreen(
     navController: NavController,
     state:RegisterState,
-    onRegister: ()->Unit,
+    onRegister: ( name:String, email:String,telefo:String, pass:String,confiPass:String )->Unit,
     onBack:()->Unit,
     onDismissDialog:()->Unit
     ){
@@ -138,14 +139,11 @@ fun RegistrationScreen(
                     keyboardActions = KeyboardActions(
                         onDone = {
                             focusManager.clearFocus()
-                            onRegister()
-                                /*. register(
-                                nameValue.value,
+                            onRegister(nameValue.value,
                                 emailValue.value,
                                 phoneValue.value,
                                 passValue.value,
-                                confirmPassValue.value
-                            )*/
+                                confirmPassValue.value)
                         }
                     ),
                     imeAction = ImeAction.Done,
@@ -175,14 +173,15 @@ fun RegistrationScreen(
                 RoundedButton(
                     text ="Sing Up",
                     displayProgressBar = state.displayProgressBar,
-                    onClick = { onRegister()
-                        /*. register(
-                        nameValue.value,
-                        emailValue.value,
-                        phoneValue.value,
-                        passValue.value,
-                        confirmPassValue.value
-                    )*/
+                    onClick = {
+                        onRegister(
+                            nameValue.value,
+                            emailValue.value,
+                            phoneValue.value,
+                            passValue.value,
+                            confirmPassValue.value
+                        )
+                        navController.navigate(AppScreens.HomeScreen.createRoute(nameValue.value.toString()))
                     }
                 )//FinRounderButton
                 ClickableText(text = buildAnnotatedString {
@@ -198,7 +197,8 @@ fun RegistrationScreen(
                 },
                     onClick ={
                         onBack()
-                    } )
+                    }
+                )
             }//FinColum2
             Spacer(modifier = Modifier.height(16.dp))
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
